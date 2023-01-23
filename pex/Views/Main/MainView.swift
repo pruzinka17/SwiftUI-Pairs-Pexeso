@@ -15,6 +15,7 @@ struct MainView: View {
     @State private var isPresentingGame: Bool = false
     @State private var isPresentingSettings: Bool = false
     @State private var isPresentingStatistics: Bool = false
+    @State private var newGameClicked: Bool = false
     
     var body: some View {
         
@@ -68,26 +69,65 @@ private extension MainView {
         
         VStack(spacing: 30) {
             
-            HStack(spacing: Constants.Menu.horizontalSpacing) {
-             
-                Button(Constants.Menu.newGameTitle) {
-                    
-                    isPresentingGame = true
-                }
-                .buttonStyle(MainMenuButtonStyle())
+            HStack {
                 
-                Button(Constants.Menu.settingsTitle) {
+                ZStack {
                     
-                    isPresentingSettings = true
-                }.buttonStyle(MainMenuButtonStyle())
+                    Button(Constants.Menu.newGameTitle) {
+                        
+                        newGameClicked = true
+                    }
+                    .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+                    .opacity(newGameClicked ? 0 : 1)
+                    .animation(.linear, value: newGameClicked)
+                    
+                    HStack {
+                        
+                        Spacer()
+                        
+                        Button(Constants.Menu.onePlayerGame) {
+                            
+                            newGameClicked = false
+                        }
+                        .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+                        .opacity(newGameClicked ? 1 : 0)
+                        .animation(.linear, value: newGameClicked)
+                        
+                        Spacer()
+                        
+                        Button(Constants.Menu.twoPlayers) {
+                            
+                            newGameClicked = false
+                        }
+                        .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+                        .opacity(newGameClicked ? 1 : 0)
+                        .animation(.linear, value: newGameClicked)
+                        
+                        Spacer()
+                    }
+                }
             }
             
             HStack {
                 
+                Spacer()
+                
                 Button(Constants.Menu.statisticsTitle) {
                     
                     isPresentingStatistics = true
-                }.buttonStyle(MainMenuButtonStyle())
+                }
+                .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+                
+                Spacer()
+                
+                Button(Constants.Menu.settingsTitle) {
+                    
+                    isPresentingSettings = true
+                }
+                .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+                    
+                
+                Spacer()
             }
         }
         .padding()
@@ -110,10 +150,12 @@ private extension MainView {
             static let newGameTitle: String = "New Game"
             static let settingsTitle: String = "Settings"
             static let statisticsTitle: String = "Statistics"
+            static let onePlayerGame: String = "One Player"
+            static let twoPlayers: String = "Two Players"
             
             static let buttonCornerRadius: CGFloat = 20
-            
-            static let horizontalSpacing:CGFloat = 50
+            static let horizontalSpacing: CGFloat = 50
+            static let buttonWidth: CGFloat = 100
         }
     }
 }

@@ -9,9 +9,12 @@ import SwiftUI
 
 struct MainMenuButtonStyle: ButtonStyle {
     
+    var buttonWidth: CGFloat
+    
     func makeBody(configuration: Configuration) -> some View {
  
         configuration.label
+            .frame(width: buttonWidth)
             .fontWeight(.bold)
             .padding()
             .background {
