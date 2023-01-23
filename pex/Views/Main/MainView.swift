@@ -17,6 +17,8 @@ struct MainView: View {
     @State private var isPresentingStatistics: Bool = false
     @State private var newGameClicked: Bool = false
     
+    // test
+    
     var body: some View {
         
         ZStack {
