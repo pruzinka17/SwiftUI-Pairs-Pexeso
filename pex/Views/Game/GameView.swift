@@ -13,6 +13,7 @@ struct GameView: View {
     
     let gameCardsBuilder: GameCardsBuilder
     let statisticsManager: StatisticsManager
+    let gameMode: String
     
     @State private var gameStarted: Bool = false
     @State private var gameFinished: Bool = false
@@ -389,7 +390,8 @@ struct GameView_Previews: PreviewProvider {
             gameCardsBuilder: GameCardsBuilder(
                 settingsManager: SettingsManager()
             ),
-            statisticsManager: StatisticsManager()
+            statisticsManager: StatisticsManager(),
+            gameMode: "onePlayer"
         )//.previewInterfaceOrientation(.landscapeLeft)
     }
 }

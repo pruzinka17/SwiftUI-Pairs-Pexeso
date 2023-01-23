@@ -17,7 +17,7 @@ struct MainView: View {
     @State private var isPresentingStatistics: Bool = false
     @State private var newGameClicked: Bool = false
     
-    // test
+    @State private var gameMode: String = ""
     
     var body: some View {
         
@@ -33,7 +33,8 @@ struct MainView: View {
             
             GameView(
                 gameCardsBuilder: GameCardsBuilder(settingsManager: settingsManager),
-                statisticsManager: statisticsManager
+                statisticsManager: statisticsManager,
+                gameMode: gameMode
             )
         }
         .fullScreenCover(isPresented: $isPresentingSettings) {
@@ -67,47 +68,55 @@ private extension MainView {
         }
     }
     
+    @ViewBuilder func makeNewGame() -> some View {
+        
+        Button(Constants.Menu.newGameTitle) {
+            
+            newGameClicked = true
+        }
+        .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+        .opacity(newGameClicked ? 0 : 1)
+        .animation(.linear, value: newGameClicked)
+    }
+    
+    @ViewBuilder func makeGameModes() -> some View {
+        
+        HStack {
+            
+            Spacer()
+            
+            Button(Constants.Menu.onePlayerGame) {
+                
+                isPresentingGame = true
+                gameMode = "oneplayer"
+                newGameClicked = false
+            }
+            .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+            .opacity(newGameClicked ? 1 : 0)
+            
+            Spacer()
+            
+            Button(Constants.Menu.twoPlayers) {
+                
+                isPresentingGame = true
+                gameMode = "twoplayers"
+                newGameClicked = false
+            }
+            .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
+            .opacity(newGameClicked ? 1 : 0)
+            
+            Spacer()
+        }
+    }
+    
     @ViewBuilder func makeMenu() -> some View {
         
         VStack(spacing: 30) {
             
-            HStack {
-                
-                ZStack {
-                    
-                    Button(Constants.Menu.newGameTitle) {
-                        
-                        newGameClicked = true
-                    }
-                    .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
-                    .opacity(newGameClicked ? 0 : 1)
-                    .animation(.linear, value: newGameClicked)
-                    
-                    HStack {
-                        
-                        Spacer()
-                        
-                        Button(Constants.Menu.onePlayerGame) {
-                            
-                            newGameClicked = false
-                        }
-                        .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
-                        .opacity(newGameClicked ? 1 : 0)
-                        .animation(.linear, value: newGameClicked)
-                        
-                        Spacer()
-                        
-                        Button(Constants.Menu.twoPlayers) {
-                            
-                            newGameClicked = false
-                        }
-                        .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
-                        .opacity(newGameClicked ? 1 : 0)
-                        .animation(.linear, value: newGameClicked)
-                        
-                        Spacer()
-                    }
-                }
+            if newGameClicked {
+                makeGameModes()
+            } else {
+                makeNewGame()
             }
             
             HStack {
