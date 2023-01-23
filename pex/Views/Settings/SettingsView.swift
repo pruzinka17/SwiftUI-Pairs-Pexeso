@@ -11,13 +11,13 @@ struct SettingsView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
-    @State var symbols: [String] = []
-    
     let settingsManager: SettingsManager
     
-    @State var isPresentingAddCard: Bool = false
+    @State private var symbols: [String] = []
     
-    @State var numberOfCards: Int = 0
+    @State private var isPresentingAddCard: Bool = false
+    
+    @State private var numberOfCards: Int = 0
     
     var body: some View {
         

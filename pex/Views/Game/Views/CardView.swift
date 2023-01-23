@@ -25,11 +25,6 @@ struct CardView: View {
                 .foregroundColor(.clear)
                 .background(content: {
                     
-//                    LinearGradient(
-//                        colors: [Color(red: 0.65, green: 0.65, blue: 0.65), Color(red: 0.78, green: 0.78, blue: 0.78)],
-//                        startPoint: .topLeading,
-//                        endPoint: .bottomTrailing
-//                    )
                     Color(red: 0.92, green: 0.92, blue: 0.92)
                     .cornerRadius(10)
                 })
@@ -42,11 +37,6 @@ struct CardView: View {
                 .foregroundColor(.clear)
                 .background(content: {
                     
-//                    LinearGradient(
-//                        colors: [Color(red: 0.65, green: 0.65, blue: 0.65), Color(red: 0.78, green: 0.78, blue: 0.78)],
-//                        startPoint: .topTrailing,
-//                        endPoint: .bottomLeading
-//                    )
                     Color(red: 0.92, green: 0.92, blue: 0.92)
                     .cornerRadius(10)
                 })

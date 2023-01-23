@@ -33,8 +33,7 @@ struct MainView: View {
             
             GameView(
                 gameCardsBuilder: GameCardsBuilder(settingsManager: settingsManager),
-                statisticsManager: statisticsManager,
-                gameMode: gameMode
+                statisticsManager: statisticsManager
             )
         }
         .fullScreenCover(isPresented: $isPresentingSettings) {

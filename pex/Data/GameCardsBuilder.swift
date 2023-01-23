@@ -20,18 +20,7 @@ final class GameCardsBuilder {
         
         var cards: [Card] = []
         
-//        SettingsManager().createNewSymbol("💀")
-//        SettingsManager().createNewSymbol("👻")
-//        SettingsManager().createNewSymbol("😺")
-//        SettingsManager().createNewSymbol("🍄")
-//        SettingsManager().createNewSymbol("❤️")
-//        SettingsManager().createNewSymbol("🧠")
-//        SettingsManager().createNewSymbol("🌴")
-//        SettingsManager().createNewSymbol("🐴")
-//        SettingsManager().createNewSymbol("😁")
-//        SettingsManager().createNewSymbol("🫀")
-        
-        let symbols: [String] = settingsManager.provideSymbols()  //[Card.Symbol.heart, Card.Symbol.cry]
+        let symbols: [String] = settingsManager.provideSymbols()
         
         for symbol in symbols {
             

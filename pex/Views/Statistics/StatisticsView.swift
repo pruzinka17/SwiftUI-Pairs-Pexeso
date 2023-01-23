@@ -13,9 +13,9 @@ struct StatisticsView: View {
     
     let statisticsManager: StatisticsManager
     
-    @State var gamesWon: Int = 0
-    @State var pairsFound: Int = 0
-    @State var cardFlips: Int = 0
+    @State private var gamesWon: Int = 0
+    @State private var pairsFound: Int = 0
+    @State private var cardFlips: Int = 0
     
     var body: some View {
         
@@ -80,7 +80,7 @@ private extension StatisticsView {
             Spacer()
             
             Menu {
-                Button("Reset Statistics") {
+                Button(Constants.resetButtonTitle) {
                     
                     resetStatistics()
                 }
@@ -120,6 +120,7 @@ private extension StatisticsView {
         static let backgroundImage = "image-background"
         static let gamesWonTitle = "Games Won:"
         static let pairsFoundTitle = "Pairs Found:"
+        static let resetButtonTitle = "Reset Statistics"
         static let cardFlips = "Cards Flipped:"
     }
 }

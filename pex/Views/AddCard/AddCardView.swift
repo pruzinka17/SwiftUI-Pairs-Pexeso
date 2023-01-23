@@ -13,9 +13,9 @@ struct AddCardView: View {
     
     let settingsManager: SettingsManager
     
-    @State var symbol = ""
-    @State var isSymbolValid = false
-    @State var notification = ""
+    @State private var symbol = ""
+    @State private var isSymbolValid = false
+    @State private var notification = ""
     
     @FocusState private var inFocus: Bool
     
