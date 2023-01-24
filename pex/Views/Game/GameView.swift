@@ -46,8 +46,6 @@ struct GameView: View {
                     
                     makeStatisticsBar(proxy: proxy)
 
-//                    Spacer()
-
                     makeGame(itemSize: itemSize)
 
                     Spacer()
