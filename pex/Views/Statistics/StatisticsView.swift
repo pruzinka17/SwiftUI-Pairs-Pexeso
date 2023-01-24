@@ -38,6 +38,7 @@ struct StatisticsView: View {
             }
         }
         .onAppear {
+            
             getAllData()
         }
     }

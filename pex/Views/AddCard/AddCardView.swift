@@ -80,10 +80,10 @@ private extension AddCardView {
     @ViewBuilder func userInput() -> some View {
         
         TextField("", text: $symbol)
-            .textFieldStyle(AddSymbolTextFieldStyle(inputInvalid: $isSymbolValid, symbol: $symbol))
+            .textFieldStyle(AddSymbolTextFieldStyle(isValid: !symbol.isEmpty ? isSymbolValid : true))
             .focused($inFocus)
         
-        Text( isSymbolValid ? "" :  notification)
+        Text(isSymbolValid ? "" :  notification)
             .fontWeight(.bold)
             .padding(.top, 20)
     }
@@ -109,23 +109,14 @@ private extension AddCardView {
     
     func doesSymbolExist() -> Bool {
         
-        if settingsManager.provideSymbols().contains(symbol) {
-            
-            return true
-        } else {
-            
-            return false
-        }
+        return settingsManager.provideSymbols().contains(symbol)
     }
     
     func containsEmoji() -> Bool {
         
-        for scalar in symbol.unicodeScalars {
+        for scalar in symbol.unicodeScalars where scalar.properties.isEmoji {
             
-            if scalar.properties.isEmoji {
-                
-                return true
-            }
+            return true
         }
     
         return false
@@ -133,38 +124,40 @@ private extension AddCardView {
  
     func validateInput() {
         
-        if symbol.count < 1 {
+        if symbol.isEmpty {
             
             notification = Constants.Notifications.blank
             isSymbolValid = false
+            return
         }
         
-        if symbol.count == 1 {
-            
-            let containsEmoji = containsEmoji()
-            
-            if containsEmoji && !doesSymbolExist() {
-                
-                isSymbolValid = true
-            }
-            else {
-                
-                if doesSymbolExist() {
-                    
-                    notification = Constants.Notifications.emojiAlreadyExists
-                } else {
-                    
-                    notification = Constants.Notifications.inputMustContainEmoji
-                }
-
-                isSymbolValid = false
-            }
-        }
-        
-        if symbol.count > 1 {
+        if !symbol.isEmpty, symbol.count > 1 {
             
             isSymbolValid = false
             notification = Constants.Notifications.inputTooLong
+            return
+        }
+        
+        let containsEmoji = containsEmoji()
+        let alreadyExists = doesSymbolExist()
+        
+        switch containsEmoji {
+        case true:
+            
+            if alreadyExists {
+                
+                notification = Constants.Notifications.emojiAlreadyExists
+                isSymbolValid = false
+                return
+            }
+            
+            notification = Constants.Notifications.blank
+            isSymbolValid = true
+            
+        case false:
+            
+            notification = Constants.Notifications.inputMustContainEmoji
+            isSymbolValid = false
         }
     }
 }

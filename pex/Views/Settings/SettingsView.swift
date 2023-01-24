@@ -27,17 +27,17 @@ struct SettingsView: View {
                 .resizable()
                 .ignoresSafeArea()
             
-            makeSettings()
-                .onAppear {
-                    
-                    getCards()
-                }
+            makeContent()
+        }
+        .onAppear {
+            
+            updateCards()
         }
         .fullScreenCover(
             isPresented: $isPresentingAddCard,
             onDismiss: {
                 
-                getCards()
+                updateCards()
             }, content: {
                 
                 AddCardView(settingsManager: settingsManager)
@@ -46,48 +46,59 @@ struct SettingsView: View {
     }
 }
 
-// MARK: - Settings Views
+// MARK: - Views methods
 
 private extension SettingsView {
     
-    @ViewBuilder func makeSettings() -> some View {
-        
-        VStack {
+    @ViewBuilder func makeContent() -> some View {
             
-            makeTopBar()
-            
-            makeSymbolStack()
-            
-            makeBottomBar()
-        }
+            VStack {
+                
+                makeTopBar()
+                
+                GeometryReader { proxy in
+                    
+                    let frame = proxy.frame(in: .local)
+                    let width = frame.width
+                    let itemSize = width / Constants.itemsPerRow - Constants.itemsSpacing
+                    
+                    makeSymbolStack(itemSize: itemSize)
+                }
+                
+                
+                makeBottomBar()
+            }
     }
     
     @ViewBuilder func makeTopBar() -> some View {
         
-        HStack {
+        ZStack {
             
-            Button {
+            HStack {
                 
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                Label("", systemImage: "return")
+                Button {
+                    
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Label("", systemImage: "return")
+                }
+                .buttonStyle(ReturnButtonStyle())
+                
+                Spacer()
             }
-            .buttonStyle(ReturnButtonStyle())
             
-            Spacer()
-            
-            Text("\(Constants.settingTitle) \(provideCardStatistics())")
-                .fontWeight(.bold)
-                .padding(.leading, -60)
-            
-            Spacer()
-            
+            HStack {
+                
+                Text("\(Constants.settingTitle) \(provideCardStatistics())")
+                    .fontWeight(.bold)
+            }
         }
     }
     
-    @ViewBuilder func makeSymbolStack() -> some View {
+    @ViewBuilder func makeSymbolStack(itemSize: CGFloat) -> some View {
         
         let gridColumns = [
+            GridItem(.flexible()),
             GridItem(.flexible()),
             GridItem(.flexible()),
             GridItem(.flexible())
@@ -101,18 +112,20 @@ private extension SettingsView {
                     
                     RoundedRectangle(cornerRadius: 20)
                         .foregroundColor(Color(red: 0.92, green: 0.92, blue: 0.92))
-                        .frame(width: 75, height: 75)
+                        .frame(width: itemSize, height: itemSize)
                         .shadow(radius: 4)
                         .overlay {
+                            
                             Text(symbol)
                         }
                         .contextMenu {
+                            
                             Button(role: .destructive) {
                                 
                                 withAnimation {
                                     
                                     settingsManager.deleteSymbol(symbol)
-                                    getCards()
+                                    updateCards()
                                 }
                             } label: {
                                 
@@ -128,6 +141,8 @@ private extension SettingsView {
     
     @ViewBuilder func makeBottomBar() -> some View {
         
+        let isButtonEnabled = numberOfCards < Constants.maximumNumberOfCards
+        
         Button {
             
             isPresentingAddCard = true
@@ -135,8 +150,8 @@ private extension SettingsView {
             
             Label(Constants.addCardTitle, systemImage: "plus.app")
         }
-        .opacity((numberOfCards < Constants.maximumNumberOfCards) ? 1 : 0.3)
-        .disabled((numberOfCards < Constants.maximumNumberOfCards) ? false : true)
+        .opacity(isButtonEnabled ? 1 : 0.3)
+        .disabled(!isButtonEnabled)
         .buttonStyle(ReturnButtonStyle())
     }
 }
@@ -145,7 +160,7 @@ private extension SettingsView {
 
 private extension SettingsView {
     
-    func getCards() {
+    func updateCards() {
         
         symbols = settingsManager.provideSymbols()
         numberOfCards = symbols.count
@@ -162,13 +177,16 @@ private extension SettingsView {
 private extension SettingsView {
     
     enum Constants {
+        
+        static let itemsPerRow: CGFloat = 4
+        static let itemsSpacing: CGFloat = 25
             
-            static let maximumNumberOfCards = 12
-            
-            static let settingTitle: String = "Your Emojis"
-            static let addCardTitle: String = "Add Card"
-            static let removeCardsTitle: String = "Remove"
-            static let backgroundImage: String = "image-background"
+        static let maximumNumberOfCards = 12
+        
+        static let settingTitle: String = "Your Emojis"
+        static let addCardTitle: String = "Add Card"
+        static let removeCardsTitle: String = "Remove"
+        static let backgroundImage: String = "image-background"
     }
 }
 
