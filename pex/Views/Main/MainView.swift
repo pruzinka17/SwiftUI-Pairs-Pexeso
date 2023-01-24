@@ -15,9 +15,6 @@ struct MainView: View {
     @State private var isPresentingGame: Bool = false
     @State private var isPresentingSettings: Bool = false
     @State private var isPresentingStatistics: Bool = false
-    @State private var newGameClicked: Bool = false
-    
-    @State private var gameMode: String = ""
     
     var body: some View {
         
@@ -67,56 +64,15 @@ private extension MainView {
         }
     }
     
-    @ViewBuilder func makeNewGame() -> some View {
-        
-        Button(Constants.Menu.newGameTitle) {
-            
-            newGameClicked = true
-        }
-        .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
-        .opacity(newGameClicked ? 0 : 1)
-        .animation(.linear, value: newGameClicked)
-    }
-    
-    @ViewBuilder func makeGameModes() -> some View {
-        
-        HStack {
-            
-            Spacer()
-            
-            Button(Constants.Menu.onePlayerGame) {
-                
-                isPresentingGame = true
-                gameMode = "oneplayer"
-                newGameClicked = false
-            }
-            .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
-            .opacity(newGameClicked ? 1 : 0)
-            
-            Spacer()
-            
-            Button(Constants.Menu.twoPlayers) {
-                
-                isPresentingGame = true
-                gameMode = "twoplayers"
-                newGameClicked = false
-            }
-            .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
-            .opacity(newGameClicked ? 1 : 0)
-            
-            Spacer()
-        }
-    }
-    
     @ViewBuilder func makeMenu() -> some View {
         
         VStack(spacing: 30) {
             
-            if newGameClicked {
-                makeGameModes()
-            } else {
-                makeNewGame()
+            Button(Constants.Menu.newGameTitle) {
+                
+                isPresentingGame = true
             }
+            .buttonStyle(MainMenuButtonStyle(buttonWidth: Constants.Menu.buttonWidth))
             
             HStack {
                 
@@ -160,8 +116,6 @@ private extension MainView {
             static let newGameTitle: String = "New Game"
             static let settingsTitle: String = "Settings"
             static let statisticsTitle: String = "Statistics"
-            static let onePlayerGame: String = "One Player"
-            static let twoPlayers: String = "Two Players"
             
             static let buttonCornerRadius: CGFloat = 20
             static let horizontalSpacing: CGFloat = 50

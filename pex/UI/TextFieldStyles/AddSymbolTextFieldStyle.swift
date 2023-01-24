@@ -16,6 +16,7 @@ struct AddSymbolTextFieldStyle: TextFieldStyle {
         configuration
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled(true)
+            .padding()
             .background(content: {
 
                 RoundedRectangle(cornerRadius: 20)
@@ -27,6 +28,6 @@ struct AddSymbolTextFieldStyle: TextFieldStyle {
             })
             .shadow(radius: 8)
             .font(.system(size: 60))
-            .frame(width: 65)
+            .frame(width: 95)
     }
 }
