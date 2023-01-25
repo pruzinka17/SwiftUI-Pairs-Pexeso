@@ -25,6 +25,8 @@ struct GameView: View {
     
     @State private var pairsFound: Int = 0
     
+    @Namespace private var namespace
+    
     var body: some View {
         
         ZStack {
@@ -92,7 +94,9 @@ private extension GameView {
                             isFlippled: true,
                             isDisabled: true,
                             onTap: {}
-                        ).frame(width: itemSize, height: itemSize)
+                        )
+                        .matchedGeometryEffect(id: card.symbol, in: namespace)
+                        .frame(width: itemSize, height: itemSize)
                     }
                 }
                 .frame(height: itemSize)
@@ -188,20 +192,41 @@ private extension GameView {
                     
                     let isFlippled = isSelected || isFound
                     
-                    CardView(
-                        model: card,
-                        scaleUp: isSelected,
-                        isFlippled: isFlippled,
-                        isDisabled: isFound,
-                        onTap: {
-                            
-                            handleSelection(for: card.id)
-                        }
-                    )
-                    .frame(width: itemSize, height: itemSize)
-                    .animation(.linear, value: isValidatingCards)
-                    .animation(.linear, value: firstSelectedCard)
-                    .animation(.linear, value: secondSelectedCard)
+                    ZStack {
+                        
+                        CardView(
+                            model: card,
+                            scaleUp: isSelected,
+                            isFlippled: isFlippled,
+                            isDisabled: isFound,
+                            onTap: {
+                                
+                                handleSelection(for: card.id)
+                            }
+                        )
+                        .frame(width: itemSize, height: itemSize)
+                        .animation(.linear, value: isValidatingCards)
+                        .animation(.linear, value: firstSelectedCard)
+                        .animation(.linear, value: secondSelectedCard)
+                        
+                        CardView(
+                            model: card,
+                            scaleUp: isSelected,
+                            isFlippled: isFlippled,
+                            isDisabled: isFound,
+                            onTap: {
+                                
+                                handleSelection(for: card.id)
+                            }
+                        )
+                        .matchedGeometryEffect(id: card.symbol, in: namespace, isSource: false)
+                        .frame(width: itemSize, height: itemSize)
+                        .animation(.linear, value: isValidatingCards)
+                        .animation(.linear, value: firstSelectedCard)
+                        .animation(.linear, value: secondSelectedCard)
+                    }
+                    
+                    
                 }
             }
             .padding()
